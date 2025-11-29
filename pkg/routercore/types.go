@@ -22,6 +22,13 @@ type Options struct {
 	Vnodes        int
 	WalkThreshold int
 	HashSeed      uint64
+
+	// ExpectedKeys is the expected total number of keys/requests that
+	// will be assigned when using CH-BL. It is used to compute the
+	// per-node capacity C = ceil(c * ExpectedKeys / numNodes).
+	//
+	// For Jump and Maglev this field is ignored.
+	ExpectedKeys int
 }
 
 var ErrUnknownAlgo = errors.New("router: unknown algorithm")
