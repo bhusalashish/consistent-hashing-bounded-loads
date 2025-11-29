@@ -3,7 +3,7 @@ package chbl
 import (
 	"sync"
 
-	"github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/router"
+	"github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/routercore"
 )
 
 type mapper struct {
@@ -12,7 +12,7 @@ type mapper struct {
 	// Later: ring, capacities, load counters, etc.
 }
 
-func newCHBL(nodes []string, opts router.Options) (router.Mapper, error) {
+func NewCHBL(nodes []string, opts routercore.Options) (routercore.Mapper, error) {
 	m := &mapper{}
 	m.Add(nodes...)
 	return m, nil

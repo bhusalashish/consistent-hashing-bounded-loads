@@ -3,17 +3,15 @@ package jump
 import (
 	"sync"
 
-	"github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/router"
+	"github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/routercore"
 )
 
-// mapper is a placeholder implementation to satisfy router.Mapper.
-// We will replace this with a real Jump consistent hashing implementation.
 type mapper struct {
 	mu    sync.RWMutex
 	nodes []string
 }
 
-func newJump(nodes []string, opts router.Options) (router.Mapper, error) {
+func NewJump(nodes []string, opts routercore.Options) (routercore.Mapper, error) {
 	m := &mapper{}
 	m.Add(nodes...)
 	return m, nil
@@ -31,13 +29,13 @@ func (m *mapper) Remove(nodes ...string) {
 	if len(nodes) == 0 || len(m.nodes) == 0 {
 		return
 	}
-	rem := make(map[string]struct{}, len(nodes))
+	rem := make(map[string]struct{})
 	for _, n := range nodes {
 		rem[n] = struct{}{}
 	}
 	var out []string
 	for _, n := range m.nodes {
-		if _, ok := rem[n]; !ok {
+		if _, exists := rem[n]; !exists {
 			out = append(out, n)
 		}
 	}
@@ -47,10 +45,8 @@ func (m *mapper) Remove(nodes ...string) {
 func (m *mapper) Pick(key []byte) string {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
-	// TEMPORARY stub: always return first node.
-	// We will replace this logic with real Jump hashing in a later step.
 	if len(m.nodes) == 0 {
 		panic("jump: no nodes registered")
 	}
-	return m.nodes[0]
+	return m.nodes[0] // STUB: will replace with real Jump hashing later
 }

@@ -3,7 +3,7 @@ package maglev
 import (
 	"sync"
 
-	"github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/router"
+	"github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/routercore"
 )
 
 type mapper struct {
@@ -12,7 +12,7 @@ type mapper struct {
 	// table and other fields will be added later
 }
 
-func newMaglev(nodes []string, opts router.Options) (router.Mapper, error) {
+func NewMaglev(nodes []string, opts routercore.Options) (routercore.Mapper, error) {
 	m := &mapper{}
 	m.Add(nodes...)
 	return m, nil

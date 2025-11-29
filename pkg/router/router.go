@@ -1,6 +1,13 @@
 package router
 
-import "errors"
+import (
+	"errors"
+
+	chbl "github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/router/chbl"
+	jump "github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/router/jump"
+	maglev "github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/router/maglev"
+	routercore "github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/routercore"
+)
 
 // Mapper is the common interface for all routing algorithms.
 //
@@ -71,15 +78,15 @@ var ErrUnknownAlgo = errors.New("router: unknown algorithm")
 //
 // The nodes slice is the initial set of backend IDs.
 // Implementations MUST treat node IDs as opaque strings but stable identifiers.
-func New(algo Algo, opts Options, nodes []string) (Mapper, error) {
+func New(algo routercore.Algo, opts routercore.Options, nodes []string) (routercore.Mapper, error) {
 	switch algo {
-	case AlgoJump:
-		return newJump(nodes, opts)
-	case AlgoMaglev:
-		return newMaglev(nodes, opts)
-	case AlgoCHBL:
-		return newCHBL(nodes, opts)
+	case routercore.AlgoJump:
+		return jump.NewJump(nodes, opts)
+	case routercore.AlgoMaglev:
+		return maglev.NewMaglev(nodes, opts)
+	case routercore.AlgoCHBL:
+		return chbl.NewCHBL(nodes, opts)
 	default:
-		return nil, ErrUnknownAlgo
+		return nil, routercore.ErrUnknownAlgo
 	}
 }
