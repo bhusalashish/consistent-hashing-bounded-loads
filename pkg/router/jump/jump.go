@@ -3,8 +3,11 @@ package jump
 import (
 	"sync"
 
+	"github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/hash"
 	"github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/routercore"
 )
+
+const MAGIC_NUMBER = 2862933555777941757
 
 type mapper struct {
 	mu    sync.RWMutex
@@ -45,8 +48,24 @@ func (m *mapper) Remove(nodes ...string) {
 func (m *mapper) Pick(key []byte) string {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
+
 	if len(m.nodes) == 0 {
 		panic("jump: no nodes registered")
 	}
-	return m.nodes[0] // STUB: will replace with real Jump hashing later
+
+	// Compute 64-bit hash using our standard xxhash implementation
+	h := hash.XXH64(key, 0) // seed = 0 for Jump (standard practice)
+
+	// Jump Consistent Hash algorithm (Google)
+	numBuckets := len(m.nodes)
+	b := -1
+	j := 0
+
+	for j < numBuckets {
+		b = j
+		h = h*MAGIC_NUMBER + 1
+		j = int(float64(b+1) * (float64(1<<31) / float64((h>>33)+1)))
+	}
+
+	return m.nodes[b]
 }
