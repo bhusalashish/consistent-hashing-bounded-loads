@@ -6,6 +6,7 @@ import (
 	chbl "github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/router/chbl"
 	jump "github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/router/jump"
 	maglev "github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/router/maglev"
+	ringch "github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/router/ringch"
 	routercore "github.com/bhusalashish/consistent-hashing-bounded-loads.git/pkg/routercore"
 )
 
@@ -86,6 +87,8 @@ func New(algo routercore.Algo, opts routercore.Options, nodes []string) (routerc
 		return maglev.NewMaglev(nodes, opts)
 	case routercore.AlgoCHBL:
 		return chbl.NewCHBL(nodes, opts)
+	case routercore.AlgoRing:
+		return ringch.NewRingCH(nodes, opts)
 	default:
 		return nil, routercore.ErrUnknownAlgo
 	}

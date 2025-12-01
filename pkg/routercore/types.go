@@ -14,6 +14,7 @@ const (
 	AlgoJump   Algo = "jump"
 	AlgoMaglev Algo = "maglev"
 	AlgoCHBL   Algo = "chbl"
+	AlgoRing   Algo = "ring"
 )
 
 type Options struct {
