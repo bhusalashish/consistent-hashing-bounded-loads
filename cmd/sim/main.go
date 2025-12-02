@@ -66,6 +66,8 @@ func main() {
 		algoEnum = rc.AlgoMaglev
 	case "chbl":
 		algoEnum = rc.AlgoCHBL
+	case "ring":
+		algoEnum = rc.AlgoRing
 	default:
 		log.Fatalf("unknown algo %q (expected jump|maglev|chbl)", *algo)
 	}

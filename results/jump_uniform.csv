@@ -15,6 +15,7 @@ node-12,6263
 node-13,6241
 node-14,6163
 node-15,6191
+#mode,dist
 #algo,jump
 #nodes,16
 #keys,100000
@@ -23,7 +24,7 @@ node-15,6191
 #load_factor,1.250
 #vnodes,100
 #walk_threshold,8
-#seed,1764410679354793000
+#seed,42
 #mean,6250.000
 #max,6431
 #std,87.904

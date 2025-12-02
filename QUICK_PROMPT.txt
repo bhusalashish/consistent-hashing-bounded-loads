@@ -1,0 +1,33 @@
+Create 15 detailed educational slides on consistent hashing and algorithm deep dives for a Distributed Systems presentation. Use Google Material Design colors (#1a73e8 primary blue), clean professional layout, and Google Sans/Roboto typography.
+
+SLIDE SET 1: Consistent Hashing Fundamentals (4-5 slides)
+- "Understanding Consistent Hashing" - Definition, key insight about minimizing remapping, comparison with traditional hashing, side-by-side visual
+- "The Hash Ring Abstraction" - Circular hash space concept, nodes and keys on ring, assignment rule (clockwise), large circular diagram with nodes and keys
+- "Why Consistent Hashing Works" - Mathematics: O(K/N) keys move on average, before/after diagrams showing key movement, comparison with traditional hashing
+- "Virtual Nodes (Vnodes)" - Problem of uneven distribution, solution with multiple vnodes per node, benefits and trade-offs, diagram showing vnodes on ring
+- "Key Properties" - Monotonicity, spread, load, smoothness, balance with icons
+
+SLIDE SET 2: Ring Consistent Hash - RingCH (2-3 slides)
+- "RingCH: The Foundation" - Original algorithm (Karger 1997), step-by-step: create ring → place vnodes → hash key → find vnode → assign, time/space complexity, visual flowchart
+- "RingCH: Advantages and Limitations" - Pros: simple, intuitive, well-understood. Cons: possible load imbalance, no explicit bounds, O(log V) lookup
+- "RingCH: Implementation Details" - Data structure (sorted array), hash function (XXH64), vnode placement, lookup algorithm, example with numbers
+
+SLIDE SET 3: Jump Consistent Hashing (2-3 slides)
+- "Jump: No Ring Needed" - Algorithm by Lamping & Veach (Google 2014), mathematical approach without ring, jump function formula, O(log N) time, O(1) space
+- "Understanding the Jump Function" - Core algorithm with pseudocode, geometric distribution concept, deterministic behavior, flowchart visualization
+- "Jump: Advantages and Use Cases" - Pros: O(1) space, fast, minimal remapping. Cons: sequential nodes only, no arbitrary removal. Use cases: Google Bigtable, Cloud Pub/Sub
+
+SLIDE SET 4: Maglev (2-3 slides)
+- "Maglev: Google's Production Load Balancer" - Algorithm by Google (NSDI 2016), permutation table approach, O(1) lookup, table construction process, visual diagram
+- "Building the Maglev Table" - Step-by-step: generate permutations, fill table entries, handle collisions, offset and skip hash functions, table filling visualization
+- "Maglev: Performance Characteristics" - O(1) lookup, near-perfect distribution, low churn, production-proven, memory overhead, performance metrics chart
+
+SLIDE SET 5: CH-BL - Consistent Hashing with Bounded Loads (3-4 slides)
+- "CH-BL: Solving Load Imbalance" - Problem: 2-3x imbalance in basic consistent hashing, solution: capacity bounds, formula C = ⌈c × ExpectedKeys / N⌉, guarantee: no node exceeds C
+- "CH-BL: The Walking Algorithm" - Step-by-step: hash key → find node → check capacity → walk if needed → two-choice fallback, animated diagram showing walking process
+- "CH-BL: Parameter Tuning" - Load Factor (c): typical 1.25, higher/lower trade-offs. ExpectedKeys: capacity calculation. Walk Threshold: prevent infinite loops. Vnodes: distribution vs memory
+- "CH-BL: Performance and Guarantees" - Guarantees: max load ≤ c × average, no node exceeds C. Performance: O(log V) + O(W). Trade-offs: slightly slower, stateful, requires capacity estimation
+- "CH-BL: Real-World Example" - Scenario: 3 nodes, 100 keys, capacity 42 per node, distribution example, what happens when node reaches capacity, result visualization
+
+Each slide should include: visual diagrams, step-by-step explanations, code snippets or pseudocode where appropriate, comparison tables, and clear visual hierarchy. These are detailed explanation slides to add depth to an existing presentation on consistent hashing.
+

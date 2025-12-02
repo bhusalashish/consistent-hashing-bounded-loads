@@ -208,3 +208,202 @@ CMPE 273 — Distributed Systems (Fall 2025)
 ## 📝 License
 
 MIT License
+
+---
+
+# 🎨 Interactive Visualization Tool (New Feature)
+
+This project now includes an **interactive web-based visualization tool** for demonstrating consistent hashing algorithms in real time.
+
+Using a Go backend + React (TypeScript) + D3.js frontend, the visualizer provides:
+
+* A **live animated consistent-hash ring**
+* Visualization of **nodes** and **keys** on the ring
+* **Real-time rebalancing** when nodes are added or removed
+* Smooth **key-movement animations**
+* Support for **all four algorithms**:
+
+  * Plain Consistent Hash (RingCH)
+  * Jump Consistent Hashing
+  * Maglev
+  * CH-BL (Consistent Hashing with Bounded Loads)
+* Hover interactions (highlight keys or nodes)
+* Fully interactive controls:
+
+  * Add Node
+  * Remove Node
+  * Regenerate Keys
+  * Select Algorithm
+  * Adjust key count
+
+All of this runs locally and integrates directly with the Go sharding implementations.
+
+---
+
+## 🚀 Visualizer Setup
+
+### 1. Run the Go backend
+
+From project root:
+
+```bash
+go run ./cmd/visualizer
+```
+
+This starts an HTTP server at:
+
+```
+http://localhost:8080
+```
+
+### 2. Run the frontend
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+Open the UI at:
+
+```
+http://localhost:5173
+```
+
+---
+
+## 🖥 What You Can Do in the Visualizer
+
+### ✨ Add or Remove Nodes
+
+* Watch the ring update instantly
+* Keys animate smoothly to new owners
+
+### 🔁 Switch Algorithms Dynamically
+
+Compare behaviors visually:
+
+* `ring`
+* `jump`
+* `maglev`
+* `chbl`
+
+### 🎞 Real-time Key Reassignment
+
+* See exactly **which keys** moved and **where** they went
+* Understand load balancing behavior intuitively
+
+### 🎛 Control Panel
+
+* Algorithm dropdown
+* Number of keys
+* Buttons for node operations
+* Regenerate keys instantly
+
+---
+
+## 📊 Why This Matters
+
+This visualization makes it easy to see:
+
+### **How Jump achieves minimal churn**
+
+* Only ~1/(N+1) keys move when adding a node.
+
+### **How Maglev ensures uniform distribution**
+
+* Nodes fill evenly around the ring.
+
+### **How CH-BL enforces load bounds**
+
+* Nodes never exceed `c × average load`, even with skew.
+
+### **How plain CH behaves as baseline**
+
+* Provides a simple reference point for evaluating improvements.
+
+---
+
+## 🎥 Perfect for Live Demos
+
+In your 20-minute presentation, you can:
+
+* Show the algorithms on static plots (from Python scripts)
+* Then switch to the visualizer and:
+
+  * Add a node live → keys animate
+  * Remove a node → keys reassign
+  * Switch algos → completely different behaviors
+
+Your professor will understand the differences instantly.
+
+---
+
+## 🧩 Architecture of the Visualizer
+
+```
+Go Backend (cmd/visualizer)
+│
+├── Exposes JSON APIs:
+│     GET /state
+│     POST /add-node
+│     POST /remove-node
+│     POST /regenerate-keys
+│
+└── Uses algorithms from:
+      pkg/router/ringch
+      pkg/router/jump
+      pkg/router/maglev
+      pkg/router/chbl
+
+React + TypeScript + D3.js Frontend (web/)
+│
+├── Components:
+│     Ring.tsx (SVG ring + nodes)
+│     Key.tsx (SVG keys)
+│     ControlPanel.tsx (UI controls)
+│     App.tsx (main shell)
+│
+└── Animations:
+      D3 transitions, easing functions
+```
+
+---
+
+## 📚 How This Integrates with the Simulator
+
+The visualizer is complementary to your CLI simulator:
+
+* Simulator → produces CSVs for academic plots
+* Visualizer → gives live intuition for real-time rebalancing
+
+Both use the exact same Go algorithm implementations.
+
+---
+
+## 📦 Recommended Workflow
+
+1. **Run simulations** (dist + churn)
+2. **Generate plots** (Python)
+3. **Run the visualizer**
+4. **Show interactive demo in presentation**
+
+This gives you:
+
+* Hard data → CV, Max/Avg, churn ratios
+* Visual intuition → live ring animations
+
+---
+
+## 🏁 Conclusion
+
+This visualizer elevates the project from a basic simulation to a **full interactive distributed-systems demo**.
+It clearly showcases how different consistent hashing strategies behave:
+
+* Balance
+* Churn
+* Key movement
+* Skew handling
+* Capacity bounds
+
+Perfect for impressing your professor, your classmates, and even future interviewe

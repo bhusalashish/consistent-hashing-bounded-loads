@@ -1,0 +1,222 @@
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-primary);
+}
+
+.app-header {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 24px;
+  box-shadow: var(--shadow-sm);
+  z-index: 100;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: 0;
+}
+
+.app-header p {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.header-compare-btn {
+  padding: 10px 20px;
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+  font-family: inherit;
+}
+
+.header-compare-btn:hover {
+  background: var(--accent-blue-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.app-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.ring-container {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.ring-container svg {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.tooltip {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 100;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  max-width: 300px;
+}
+
+.tooltip strong {
+  color: var(--text-primary);
+  margin-right: 8px;
+  font-weight: 500;
+}
+
+.tooltip-explanation {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.tooltip-explanation strong {
+  color: var(--accent-blue);
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.tooltip-position-explanation {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(26, 115, 232, 0.1);
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.tooltip-position-explanation em {
+  font-style: normal;
+  color: var(--text-primary);
+}
+
+.app-loading,
+.app-error {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.app-loading p,
+.app-error p {
+  margin-top: 16px;
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.app-error button {
+  margin-top: 16px;
+  padding: 10px 24px;
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.app-error button:hover {
+  background: var(--accent-blue-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.error-help {
+  margin: 16px 0;
+  padding: 16px;
+  background: rgba(234, 67, 53, 0.1);
+  border-left: 3px solid var(--accent-red);
+  border-radius: 4px;
+  text-align: left;
+  max-width: 600px;
+}
+
+.error-help p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.error-help code {
+  display: block;
+  margin: 8px 0;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .app-content {
+    flex-direction: column;
+  }
+  
+  .ring-container {
+    min-height: 50vh;
+  }
+}

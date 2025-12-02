@@ -36,6 +36,14 @@ type mapper struct {
 	seed2 uint64
 }
 
+// CapacityStatus returns information about current capacity status.
+type CapacityStatus struct {
+	NodesAtCapacity []string
+	CapacityPerNode map[string]int
+	CurrentLoad     map[string]int
+	LoadPercentage  map[string]float64
+}
+
 // NewCHBL constructs a bounded-load consistent-hashing mapper.
 //
 // It uses a vnode-based ring and enforces a per-node capacity:
@@ -147,6 +155,7 @@ func (m *mapper) rebuild(nodes []string) {
 // using a two-choice fallback if the linear walk gets too long.
 //
 // NOTE: This mapper is stateful over Pick calls (it tracks load).
+// Returns empty string if all nodes are at capacity.
 func (m *mapper) Pick(key []byte) string {
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -190,11 +199,45 @@ func (m *mapper) Pick(key []byte) string {
 		}
 		if idx == startIdx {
 			// We've looped around the whole ring and found no capacity.
-			// This indicates that ExpectedKeys * LoadFactor is too low
-			// for the actual call volume.
-			panic("chbl: all nodes at capacity; increase ExpectedKeys or LoadFactor")
+			// Return empty string instead of panicking
+			return ""
 		}
 	}
+}
+
+// CHBLMapper is an interface for accessing CH-BL specific methods.
+type CHBLMapper interface {
+	GetCapacityStatus() CapacityStatus
+}
+
+// GetCapacityStatus returns current capacity information.
+func (m *mapper) GetCapacityStatus() CapacityStatus {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	status := CapacityStatus{
+		NodesAtCapacity: make([]string, 0),
+		CapacityPerNode: make(map[string]int),
+		CurrentLoad:     make(map[string]int),
+		LoadPercentage: make(map[string]float64),
+	}
+
+	for i, node := range m.nodes {
+		status.CapacityPerNode[node] = m.capacityPerNode
+		status.CurrentLoad[node] = m.load[i]
+		
+		if m.capacityPerNode > 0 {
+			status.LoadPercentage[node] = float64(m.load[i]) / float64(m.capacityPerNode) * 100
+		} else {
+			status.LoadPercentage[node] = 0
+		}
+		
+		if m.load[i] >= m.capacityPerNode {
+			status.NodesAtCapacity = append(status.NodesAtCapacity, node)
+		}
+	}
+
+	return status
 }
 
 // twoChoiceFallback hashes the key again to get a second candidate and
